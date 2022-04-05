@@ -15,15 +15,18 @@ import java.util.List;
 public class PostController {
     private PostService postService;
 
-    //create blog post
     @PostMapping
     public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO postDTO) {
         return new ResponseEntity<>(postService.createPost(postDTO), HttpStatus.CREATED);
     }
 
-    //get all posts rest api
     @GetMapping
     public List<PostDTO> getAllPosts() {
         return postService.getAllPosts();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PostDTO> getPostById(@PathVariable(name = "id") Long id) {
+        return ResponseEntity.ok(postService.getPostById(id));
     }
 }
