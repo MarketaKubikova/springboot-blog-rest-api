@@ -53,19 +53,6 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDTO updatePost(PostDTO postDTO, Long id) {
-        Post post = getPost(id);
-
-        post.setTitle(postDTO.getTitle());
-        post.setDescription(postDTO.getDescription());
-        post.setContent(postDTO.getContent());
-
-        Post updatedPost = postRepository.save(post);
-
-        return mapToDTO(updatedPost);
-    }
-
-    @Override
     public void deletePostById(Long id) {
         Post post = getPost(id);
         postRepository.delete(post);
