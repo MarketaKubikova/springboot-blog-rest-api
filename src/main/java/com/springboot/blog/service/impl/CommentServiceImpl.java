@@ -47,17 +47,23 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentDTO getCommentById(Long postId, Long commentId) {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
-
-        Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Comment", "id", commentId));
-
-        if (!comment.getPost().getId().equals(post.getId())) {
-            throw new BlogAPIException(HttpStatus.BAD_REQUEST, "Comment does not belong to post");
-        }
+    public CommentDTO getCommentById(long postId, long commentId) {
+        Comment comment = getComment(postId, commentId);
 
         return mapToDTO(comment);
+    }
+
+    @Override
+    public CommentDTO updateComment(long postId, long commentId, CommentDTO commentDTO) {
+        Comment comment = getComment(postId, commentId);
+
+        comment.setName(commentDTO.getName());
+        comment.setEmail(commentDTO.getEmail());
+        comment.setBody(commentDTO.getBody());
+
+        Comment updatedComment = commentRepository.save(comment);
+
+        return mapToDTO(updatedComment);
     }
 
     private CommentDTO mapToDTO(Comment comment) {
@@ -77,6 +83,18 @@ public class CommentServiceImpl implements CommentService {
         comment.setEmail(commentDTO.getEmail());
         comment.setBody(commentDTO.getBody());
 
+        return comment;
+    }
+
+    private Comment getComment(long postId, long commentId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId));
+
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Comment", "id", commentId));
+
+        if (!comment.getPost().getId().equals(post.getId())) {
+            throw new BlogAPIException(HttpStatus.BAD_REQUEST, "Comment does not belong to post");
+        }
         return comment;
     }
 }
