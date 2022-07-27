@@ -1,0 +1,12 @@
+#Create a new comment on specific post
+POST {{hostname}}/posts/1/comments
+Content-Type: application/json
+
+{
+    "name": "John",
+    "email": "john@doe.com",
+    "body": "I like your work"
+}
+
+###
+
