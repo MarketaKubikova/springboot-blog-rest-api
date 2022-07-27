@@ -1,0 +1,21 @@
+#Create new post
+POST {{hostname}}/posts
+Content-Type: application/json
+
+{
+    "title": "First Post",
+    "description": "The very first post",
+    "content": "Here should be something very interesting."
+}
+
+###
+
+#List of all posts
+GET {{hostname}}/posts
+Content-Type: application/json
+
+{
+  "title": "First Post",
+  "description": "The very first post",
+  "content": "Here should be something very interesting."
+}
