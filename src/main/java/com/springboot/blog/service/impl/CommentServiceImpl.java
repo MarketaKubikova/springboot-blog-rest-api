@@ -8,22 +8,21 @@ import com.springboot.blog.payload.CommentDTO;
 import com.springboot.blog.repository.CommentRepository;
 import com.springboot.blog.repository.PostRepository;
 import com.springboot.blog.service.CommentService;
+import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @Service
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
-
-    public CommentServiceImpl(CommentRepository commentRepository, PostRepository postRepository) {
-        this.commentRepository = commentRepository;
-        this.postRepository = postRepository;
-    }
+    private final ModelMapper modelMapper;
 
     @Override
     public CommentDTO createComment(long postId, CommentDTO commentDTO) {
@@ -73,23 +72,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     private CommentDTO mapToDTO(Comment comment) {
-        CommentDTO commentDTO = new CommentDTO();
-        commentDTO.setId(comment.getId());
-        commentDTO.setName(comment.getName());
-        commentDTO.setEmail(comment.getEmail());
-        commentDTO.setBody(comment.getBody());
-
-        return commentDTO;
+        return modelMapper.map(comment, CommentDTO.class);
     }
 
     private Comment mapToEntity(CommentDTO commentDTO) {
-        Comment comment = new Comment();
-        comment.setId(commentDTO.getId());
-        comment.setName(commentDTO.getName());
-        comment.setEmail(commentDTO.getEmail());
-        comment.setBody(commentDTO.getBody());
-
-        return comment;
+        return modelMapper.map(commentDTO, Comment.class);
     }
 
     private Comment getComment(long postId, long commentId) {
