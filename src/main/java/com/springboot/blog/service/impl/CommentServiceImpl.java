@@ -42,7 +42,7 @@ public class CommentServiceImpl implements CommentService {
 
         return comments.stream()
                 .map(this::mapToDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
