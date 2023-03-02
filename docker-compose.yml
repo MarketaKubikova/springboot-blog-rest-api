@@ -2,9 +2,12 @@ version: '3'
 
 services:
   mysql-development:
+    container_name: my-blog
     image: mysql:latest
     environment:
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: myblog
+      MYSQL_PASSWORD: mysql
       MYSQL_DATABASE: myblogdb
     ports:
       - "3306:3306"
